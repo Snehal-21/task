@@ -1,28 +1,18 @@
-import express from "express";
+import express from "express"
 import morgan from "morgan";
-import path from "path";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
-// import fs from "fs";
-import router from "./routes/userroutes.js";
+import router from "./routes/userRoutes.js";
 
-const app=express();
-
-const __dirname=path.resolve();
+const app = express();
+dotenv.config();
 
 app.use(morgan('dev'));
 app.use(express.json());
-app.use('/api/task',router);
+app.use("/api/task", router);
 
-// app.get("/products",(req,res)=>{
-//     try{
-//         const products_data = JSON.parse(fs.readFileSync(__dirname+`/products.json`)); 
-//         console.log(products_data);
-//         return res.send(products_data);
-//     }catch(error){
-//         return res.send(error);
-//     }
-// })
+mongoose.connect(process.env.MONGODB)
+.then(() => console.log("DB Connected"))
+.catch((err) => console.log("DB Error ==>", err));
 
-
-
-app.listen((8000),()=>console.log("working"));
+app.listen(process.env.PORT, ()=> console.log("Working on port "));
