@@ -1,7 +1,8 @@
 import express from "express";
-import { Products, countProduct } from "../controllers/productController.js";
+import { Products, countProduct, pagination } from "../controllers/productController.js";
 const router=express();
 
 router.get('/Products',Products);
-router.get('/countProduct',countProduct)
+router.get('/countProduct',countProduct);
+router.get('/pagination',pagination);
 export default router;

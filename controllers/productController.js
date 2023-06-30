@@ -55,8 +55,81 @@ export const Products = async (req, res) => {
                     const[price1,price2]=range.split("-").map(Number);
                     const productRange=await Product.find({}).exec();
                     let productFilter=productRange.filter(items => items.price>=price1 && items.price<=price2);
-                    return res.send({"Total products are":productFilter.length,"products":productFilter})
+                    return res.send({"Total products are":productFilter.length,"products":productFilter});
+                }else{
+                    const price=parseInt(range);
+                    const productRange=await Product.find({}).exec();
+                    let productFilter=productRange.filter(items=>items.price >=price);
+                    return res.send({"Total products are":productFilter.length,"products":productFilter});
+                    
                 }
+            }
+            if(category && range){
+                if(range.includes("-")){
+                    const[price1,price2]=range.split("-").map(Number);
+                    const productRange=await Product.find({category}).exec();
+                    let productFilter=productRange.filter(items => items.price>=price1 && items.price<=price2);
+                    return res.send({"Total products are":productFilter.length,"products":productFilter});
+                }else{
+                    const price=parseInt(range);
+                    const productRange=await Product.find({category}).exec();
+                    let productFilter=productRange.filter(items=>items.price >=price);
+                    return res.send({"Total products are":productFilter.length,"products":productFilter});
+                    
+                }
+            }
+        } catch (error) {
+            return res.send(error);
+        }
+    }
+
+
+    export const pagination=async(req,res)=>{
+        try {
+            const {limit,offset}=req.query;
+            const defaultlimit=5;
+            const defaultoffset=0;
+            if(!limit && ! offset){
+                const product=await Product.find({}).skip(defaultoffset).limit(defaultlimit).exec();
+                if(!product.length) return res.send("Products not found.");
+                let ObjectProduct = {};
+                for(let i=0;i<product.length;i++){
+                    ObjectProduct[i] = product[i]._id;
+                }
+                return res.send({"Total products are":product.length,"Object ID's of Products" : ObjectProduct,"products":product});
+            }
+
+            if(!limit && offset){
+                const newOffset = offset * defaultlimit;
+                const product=await Product.find({}).skip(newOffset).limit(defaultlimit).exec();
+                if(!product.length) return res.send("Products not found.");
+                let ObjectProduct = {};
+                for(let i=0;i<product.length;i++){
+                    ObjectProduct[i] = product[i]._id;
+                }
+                return res.send({"Total products are":product.length,"Object ID's of Products" : ObjectProduct,"products":product});
+            }
+
+            if(limit && !offset){
+                const newOffset = offset * limit;
+                const product=await Product.find({}).skip(newOffset).limit(limit).exec();
+                if(!product.length) return res.send("Products not found.");
+                let ObjectProduct = {};
+                for(let i=0;i<product.length;i++){
+                    ObjectProduct[i] = product[i]._id;
+                }
+                return res.send({"Total products are":product.length,"Object ID's of Products" : ObjectProduct,"products":product});
+            }
+
+            if(limit && offset){
+                const newOffset = offset * limit;
+                const product=await Product.find({}).skip(newOffset).limit(limit).exec();
+                if(!product.length) return res.send("Products not found.");
+                let ObjectProduct = {};
+                for(let i=0;i<product.length;i++){
+                    ObjectProduct[i] = product[i]._id;
+                }
+                return res.send({"Total products are":product.length,"Object ID's of Products" : ObjectProduct,"products":product});
             }
         } catch (error) {
             return res.send(error);
