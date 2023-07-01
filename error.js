@@ -8,11 +8,11 @@
 // message.greet();
 
 
-let patternToCheck = /[a|h]/;
+let patternToCheck = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])(?=.*[0-9]).{7,12}$/;
 
-let str = "pssword";
+let str = "abhishek@12";
 
-console.log(patternToCheck.test(str));
+console.log(patternToCheck.exec());
 
 
 
