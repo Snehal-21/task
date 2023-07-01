@@ -15,4 +15,4 @@ mongoose.connect(process.env.MONGODB)
 .then(() => console.log("DB Connected"))
 .catch((err) => console.log("DB Error ==>", err));
 
-app.listen(process.env.PORT, ()=> console.log("Working on port "));
+app.listen(process.env.PORT, ()=> console.log(`working on port ${process.env.PORT}`));
