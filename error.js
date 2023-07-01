@@ -6,3 +6,15 @@
 // }
 
 // message.greet();
+
+
+let patternToCheck = /[a|h]/;
+
+let str = "pssword";
+
+console.log(patternToCheck.test(str));
+
+
+
+
+  

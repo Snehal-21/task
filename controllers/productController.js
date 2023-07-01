@@ -137,3 +137,56 @@ export const Products = async (req, res) => {
     }
 
 
+export const app= async(req, res)=> {
+        try {
+            // console.log(req.query, "req.query")
+            const limit = (req.query.limit < 5 ? req.query.limit : 5 );
+            const offset = req.query.offset || 0;
+            // console.log(limit, offset,"limit, offset")
+            // var ids = [];
+    
+            //Write your Code here.
+            const resFromDB = await Product.find().skip(limit * offset).limit(limit).select('_id');
+            
+            const ids = resFromDB.map(pro => pro._id)
+    
+            res.send(ids);
+    
+        } catch (error) {
+            return res.send(error)
+        }
+    }
+
+
+
+
+    export const appcount =async (req, res)=>
+    
+    
+    {
+
+        const { category, range } = req.query;
+        try {
+            let query = {};
+            // console.log(range)
+            if (category) {
+                query.category = category
+            }
+            if (range) {
+    
+                const [minPrice, maxPrice] = range.split('-');
+                // console.log(minPrice, maxPrice,"chec here")
+                if (minPrice && maxPrice) {
+                    query.price = { $gte: minPrice, $lte: maxPrice }
+                } else if (minPrice) {
+                    query.price = { $gte: minPrice }
+                }
+            }
+            // console.log(query, "query")
+            // console.log(minPrice,maxPrice,"range")
+            const resFromMongo = await Product.find(query).exec();
+            res.json(resFromMongo.length);
+        } catch (error) {
+            return res.send(error);
+        }
+    }
